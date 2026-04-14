@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="好食家 - 智能饮食助手，为您量身定制健康饮食方案">
+    <meta name="keywords" content="饮食推荐,健康饮食,智能推荐,吃什么,饮食助手">
+    <title>好食家 - 智能饮食助手</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍽️</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #4CAF50;
+            --primary-light: #E8F5E9;
+            --primary-dark: #388E3C;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --bg-white: #FFFFFF;
+            --bg-light: #F9F9F9;
+            --bg-card: #FFFFFF;
+            --border-color: #EEEEEE;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --radius: 16px;
+            --radius-sm: 12px;
+            --radius-lg: 20px;
+            --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        
+        body {
+            background-color: var(--bg-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: calc(80px + var(--safe-area-inset-bottom));
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .page {
+            display: none;
+            padding: 16px;
+            padding-bottom: 100px;
+            animation: fadeIn 0.3s ease;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 头部样式 */
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-top: 12px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid var(--border-color);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 12px;
+            touch-action: manipulation;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:active {
+            background-color: var(--primary-dark);
+            transform: scale(0.98);
+        }
+        
+        .btn-secondary {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .btn-secondary:active {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .btn-outline:active {
+            background-color: var(--primary-light);
+        }
+        
+        /* 单选按钮组 */
+        .radio-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .radio-option {
+            flex: 1;
+            text-align: center;
+            padding: 14px 8px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .radio-option:active {
+            border-color: var(--primary-color);
+        }
+        
+        .radio-option.selected {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            padding-bottom: calc(12px + var(--safe-area-inset-bottom));
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+            flex: 1;
+            max-width: 100px;
+        }
+        
+        .nav-item:active {
+            background-color: var(--bg-light);
+        }
+        
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-icon {
+            font-size: 22px;
+        }
+        
+        .nav-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        /* 菜品展示 */
+        .dish-card {
+            text-align: center;
+            padding: 24px 16px;
+            background-color: var(--primary-light);
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+        }
+        
+        .dish-image {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--primary-color);
+            border: 4px solid white;
+            box-shadow: var(--shadow);
+        }
+        
+        .dish-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .dish-desc {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+        
+        /* 结果卡片 */
+        .result-card {
+            background-color: var(--bg-light);
+            border-left: 4px solid var(--primary-color);
+            padding: 14px;
+            margin-bottom: 14px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-dark);
+            font-size: 15px;
+        }
+        
+        /* 个人资料 */
+        .profile-header {
+            text-align: center;
+            padding: 24px 16px;
+            background: linear-gradient(135deg, var(--primary-light), white);
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+        }
+        
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .profile-email {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        /* 功能列表 */
+        .menu-list {
+            list-style: none;
+        }
+        
+        .menu-item {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+        }
+        
+        .menu-item:active {
+            background-color: var(--bg-light);
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-icon {
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+        
+        .menu-text {
+            flex: 1;
+            margin-left: 14px;
+            font-size: 15px;
+        }
+        
+        .menu-arrow {
+            color: var(--text-light);
+            font-size: 13px;
+        }
+        
+        /* 提示框 */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            font-size: 14px;
+            text-align: center;
+            max-width: 80%;
+            word-break: break-word;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* 按钮组 */
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        
+        .button-group .btn {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 360px) {
+            .page {
+                padding: 12px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .btn {
+                padding: 16px;
+                font-size: 15px;
+            }
+            
+            .radio-option {
+                padding: 12px 6px;
+                font-size: 14px;
+            }
+        }
+        
+        /* PWA优化 */
+        html, body {
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        body {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--primary-light);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 分享按钮 */
+        .share-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <div>好食家加载中...</div>
+    </div>
+    
+    <!-- 分享按钮 -->
+    <div class="share-btn" onclick="shareApp()" title="分享应用">
+        📤
+    </div>
+    
+    <!-- 提示框 -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- 页面1: 首页 -->
+    <div id="page-home" class="page active">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">🍽️</div>
+                好食家
+            </div>
+            <div class="subtitle">智能饮食助手，为您量身定制健康饮食方案</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">核心功能</div>
+            <button class="btn btn-primary" onclick="navigateTo('page-info')">
+                <span>🎯</span> 智能推荐
+            </button>
+            <button class="btn btn-secondary" onclick="navigateTo('page-random')">
+                <span>🎲</span> 随机吃什么
+            </button>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">今日小贴士</div>
+            <div id="tip-content">
+                <p>🥦 每天摄入5种不同颜色的蔬菜水果</p>
+                <p>💧 饭前喝一杯水，增加饱腹感</p>
+                <p>⏰ 规律的三餐时间很重要</p>
+            </div>
+        </div>
+        
+        <div class="card" style="margin-top: 30px; background: #f0f9ff; border-color: #4CAF50;">
+            <div class="card-title" style="color: #4CAF50;">📱 添加到主屏幕</div>
+            <p style="font-size: 14px; color: #666; margin-bottom: 10px;">
+                点击浏览器菜单，选择"添加到主屏幕"，像原生应用一样使用！
+            </p>
+        </div>
+    </div>
+    
+    <!-- 页面2: 信息填写页 -->
+    <div id="page-info" class="page">
+        <div class="header">
+            <div class="card-title">你的专属饮食方案</div>
+            <div class="subtitle">请填写以下信息，获取个性化建议</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-title">性别</div>
+            <div class="radio-group">
+                <div class="radio-option" onclick="selectOption('gender', 'male')">男</div>
+                <div class="radio-option" onclick="selectOption('gender', 'female')">女</div>
+            </div>
+            
+            <div class="card-title">年龄</div>
+            <div class="radio-group">
+                <div class="radio-option" onclick="selectOption('age', 'young')">18-29岁</div>
+                <div class="radio-option" onclick="selectOption('age', 'middle')">30-44岁</div>
+                <div class="radio-option" onclick="selectOption('age', 'senior')">45岁+</div>
+            </div>
+            
+            <div class="card-title">饮食目标</div>
+            <div class="radio-group">
+                <div class="radio-option" onclick="selectOption('goal', 'lose')">减脂</div>
+                <div class="radio-option" onclick="selectOption('goal', 'balance')">均衡健康</div>
+            </div>
+            
+            <div class="card-title">饮食偏好</div>
+            <div class="radio-group">
+                <div class="radio-option" onclick="selectOption('preference', 'light')">清淡</div>
+                <div class="radio-option" onclick="selectOption('preference', 'normal')">正常</div>
+                <div class="radio-option" onclick="selectOption('preference', 'heavy')">略重口</div>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary" onclick="analyzeAndNavigate()">
+            <span>📊</span> 开始分析
+        </button>
+    </div>
+    
+    <!-- 页面3: 结果展示页 -->
+    <div id="page-result" class="page">
+        <div class="header">
+            <div class="card-title">你的专属饮食建议</div>
+            <div class="subtitle" id="result-subtitle">基于您的个人情况定制</div>
+        </div>
+        
+        <div class="result-card">
+            <div class="result-title">饮食方向总结</div>
+            <div id="summary-text">加载中...</div>
+        </div>
+        
+        <div class="result-card">
+            <div class="result-title">推荐多吃的3类食物</div>
+            <ul id="recommend-foods" style="padding-left: 20px; margin-top: 8px;">
+                <li>加载中...</li>
+            </ul>
+        </div>
+        
+        <div class="result-card">
+            <div class="result-title">建议少吃的2类食物</div>
+            <ul id="avoid-foods" style="padding-left: 20px; margin-top: 8px;">
+                <li>加载中...</li>
+            </ul>
+        </div>
+        
+        <div class="result-card">
+            <div class="result-title">今日推荐搭配餐单</div>
+            <div id="meal-plan" style="margin-top: 8px;">加载中...</div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="savePlan()">
+                <span>💾</span> 保存方案
+            </button>
+            <button class="btn btn-outline" onclick="navigateTo('page-home')">
+                <span>🏠</span> 返回首页
+            </button>
+        </div>
+    </div>
+    
+    <!-- 页面4: 随机吃什么页 -->
+    <div id="page-random" class="page">
+        <div class="header">
+            <div class="card-title">随机吃什么</div>
+            <div class="subtitle">让选择变得简单有趣</div>
+        </div>
+        
+        <div class="dish-card">
+            <div class="dish-image" id="dish-emoji">🍜</div>
+            <div class="dish-name" id="dish-name">点击下方按钮</div>
+            <div class="dish-desc" id="dish-desc">获取随机菜品推荐</div>
+        </div>
+        
+        <button class="btn btn-primary" onclick="generateRandomDish()">
+            <span>🎲</span> 随机推荐一道菜
+        </button>
+        
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="generateRandomDish()">
+                <span>🔄</span> 换一个
+            </button>
+            <button class="btn btn-outline" onclick="addToFavorites()">
+                <span>❤️</span> 收藏
+            </button>
+            <button class="btn btn-outline" onclick="navigateTo('page-home')">
+                <span>🏠</span> 首页
+            </button>
+        </div>
+    </div>
+    
+    <!-- 页面5: 我的页 -->
+    <div id="page-profile" class="page">
+        <div class="profile-header">
+            <div class="profile-avatar">用</div>
+            <div class="profile-name">好食家用户</div>
+            <div class="profile-email">user@haoshijia.com</div>
+        </div>
+        
+        <div class="card">
+            <ul class="menu-list">
+                <li class="menu-item" onclick="showToast('查看我的饮食方案')">
+                    <div class="menu-icon">📋</div>
+                    <div class="menu-text">我的饮食方案</div>
+                    <div class="menu-arrow">›</div>
+                </li>
+                <li class="menu-item" onclick="showToast('查看我的收藏')">
+                    <div class="menu-icon">❤️</div>
+                    <div class="menu-text">我的收藏</div>
+                    <div class="menu-arrow">›</div>
+                </li>
+                <li class="menu-item" onclick="showToast('进入设置')">
+                    <div class="menu-icon">⚙️</div>
+                    <div class="menu-text">设置</div>
+                    <div class="menu-arrow">›</div>
+                </li>
+                <li class="menu-item" onclick="shareApp()">
+                    <div class="menu-icon">📤</div>
+                    <div class="menu-text">分享应用</div>
+                    <div class="menu-arrow">›</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="navigateTo('page-home')">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-text">首页</div>
+        </div>
+        <div class="nav-item" onclick="navigateTo('page-profile')">
+            <div class="nav-icon">👤</div>
+            <div class="nav-text">我的</div>
+        </div>
+    </div>
+
+    <script>
+        // 应用状态
+        const appState = {
+            userInfo: {
+                gender: null,
+                age: null,
+                goal: null,
+                preference: null
+            },
+            currentDish: null,
+            favorites: []
+        };
+        
+        // 菜品数据库
+        const dishes = [
+            {
+                name: "番茄炒蛋",
+                desc: "经典家常菜，营养均衡，富含蛋白质和维生素",
+                emoji: "🍅",
+                category: "家常"
+            },
+            {
+                name: "清蒸鲈鱼",
+                desc: "低脂高蛋白，清淡鲜美，适合健康饮食",
+                emoji: "🐟",
+                category: "海鲜"
+            },
+            {
+                name: "西兰花炒鸡胸肉",
+                desc: "减脂优选，高蛋白低脂肪，饱腹感强",
+                emoji: "🥦",
+                category: "健身餐"
+            },
+            {
+                name: "麻婆豆腐",
+                desc: "川菜经典，麻辣鲜香，开胃下饭",
+                emoji: "🌶️",
+                category: "川菜"
+            },
+            {
+                name: "蔬菜沙拉",
+                desc: "多种蔬菜搭配，清爽健康，维生素丰富",
+                emoji: "🥗",
+                category: "轻食"
+            },
+            {
+                name: "红烧肉",
+                desc: "传统美味，肥而不腻，偶尔享受",
+                emoji: "🍖",
+                category: "传统"
+            },
+            {
+                name: "海鲜粥",
+                desc: "温暖养胃，营养丰富，适合早餐或晚餐",
+                emoji: "🍲",
+                category: "粥品"
+            },
+            {
+                name: "意大利面",
+                desc: "西式经典，碳水化合物充足，搭配蔬菜更健康",
+                emoji: "🍝",
+                category: "西餐"
+            }
+        ];
+        
+        // 页面导航
+        function navigateTo(pageId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // 显示目标页面
+            document.getElementById(pageId).classList.add('active');
+            
+            // 更新导航栏状态
+            updateNav(pageId);
+            
+            // 如果是结果页，生成结果
+            if (pageId === 'page-result') {
+                generateResult();
+            }
+            
+            // 如果是随机页，生成随机菜品
+            if (pageId === 'page-random') {
+                generateRandomDish();
+            }
+        }
+        
+        // 更新导航栏状态
+        function updateNav(pageId) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            if (pageId === 'page-home') {
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+            } else if (pageId === 'page-profile') {
+                document.querySelectorAll('.nav-item')[1].classList.add('active');
+            }
+        }
+        
+        // 选择选项
+        function selectOption(type, value) {
+            appState.userInfo[type] = value;
+            
+            // 更新UI
+            const options = document.querySelectorAll(`[onclick*="${type}"]`);
+            options.forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            event.target.classList.add('selected');
+        }
+        
+        // 分析并跳转到结果页
+        function analyzeAndNavigate() {
+            // 检查是否所有选项都已选择
+            const required = ['gender', 'age', 'goal', 'preference'];
+            const missing = required.filter(field => !appState.userInfo[field]);
+            
+            if (missing.length > 0) {
+                showToast('请先完成所有选项');
+                return;
+            }
+            
+            navigateTo('page-result');
+        }
+        
+        // 生成个性化结果
+        function generateResult() {
+            const { gender, age, goal, preference } = appState.userInfo;
+            
+            // 根据用户信息生成个性化建议
+            let summary = '';
+            let recommendFoods = [];
+            let avoidFoods = [];
+            let mealPlan = '';
+            
+            // 生成总结
+            if (goal === 'lose') {
+                summary = '您的目标是减脂，建议控制总热量摄入，增加蛋白质和膳食纤维';
+            } else {
+                summary = '您的目标是均衡健康，建议多样化饮食，保证营养全面';
+            }
+            
+            if (age === 'young') {
+                summary += '。考虑到您处于青年期，新陈代谢较快，可以适当增加碳水化合物摄入。';
+            } else if (age === 'middle') {
+                summary += '。考虑到您处于中年期，建议注重蛋白质摄入，维持肌肉量。';
+            } else {
+                summary += '。考虑到您处于中老年期，建议注重钙质和维生素D的摄入。';
+            }
+            
+            // 推荐食物
+            if (goal === 'lose') {
+                recommendFoods = [
+                    '高蛋白食物：鸡胸肉、鱼肉、豆腐',
+                    '高纤维蔬菜：西兰花、菠菜、芹菜',
+                    '低GI主食：糙米、燕麦、全麦面包'
+                ];
+            } else {
+                recommendFoods = [
+                    '优质蛋白：鸡蛋、牛奶、豆制品',
+                    '多彩蔬菜：番茄、胡萝卜、彩椒',
+                    '健康脂肪：牛油果、坚果、橄榄油'
+                ];
+            }
+            
+            // 避免食物
+            if (goal === 'lose') {
+                avoidFoods = [
+                    '高糖饮料和甜点',
+                    '油炸食品和加工肉类'
+                ];
+            } else {
+                avoidFoods = [
+                    '过量盐分和腌制食品',
+                    '反式脂肪和人工添加剂'
+                ];
+            }
+            
+            // 餐单
+            if (preference === 'light') {
+                mealPlan = '早餐：燕麦粥 + 水煮蛋 + 水果\n午餐：清蒸鱼 + 炒时蔬 + 糙米饭\n晚餐：蔬菜汤 + 凉拌豆腐';
+            } else if (preference === 'heavy') {
+                mealPlan = '早餐：全麦三明治 + 牛奶\n午餐：红烧鸡块 + 炒青菜 + 米饭\n晚餐：麻婆豆腐 + 蔬菜沙拉';
+            } else {
+                mealPlan = '早餐：鸡蛋饼 + 豆浆\n午餐：番茄炒蛋 + 西兰花 + 米饭\n晚餐：蔬菜炒肉 + 紫菜汤';
+            }
+            
+            // 更新UI
+            document.getElementById('summary-text').textContent = summary;
+            
+            const recommendList = document.getElementById('recommend-foods');
+            recommendList.innerHTML = '';
+            recommendFoods.forEach(food => {
+                const li = document.createElement('li');
+                li.textContent = food;
+                recommendList.appendChild(li);
+            });
+            
+            const avoidList = document.getElementById('avoid-foods');
+            avoidList.innerHTML = '';
+            avoidFoods.forEach(food => {
+                const li = document.createElement('li');
+                li.textContent = food;
+                avoidList.appendChild(li);
+            });
+            
+            document.getElementById('meal-plan').textContent = mealPlan;
+            
+            // 更新副标题
+            const genderText = gender === 'male' ? '男性' : '女性';
+            const ageText = age === 'young' ? '18-29岁' : age === 'middle' ? '30-44岁' : '45岁+';
+            document.getElementById('result-subtitle').textContent = 
+                `为您（${genderText}，${ageText}）量身定制`;
+        }
+        
+        // 生成随机菜品
+        function generateRandomDish() {
+            const randomIndex = Math.floor(Math.random() * dishes.length);
+            const dish = dishes[randomIndex];
+            appState.currentDish = dish;
+            
+            document.getElementById('dish-name').textContent = dish.name;
+            document.getElementById('dish-desc').textContent = dish.desc;
+            document.getElementById('dish-emoji').textContent = dish.emoji;
+        }
+        
+        // 添加到收藏
+        function addToFavorites() {
+            if (!appState.currentDish) {
+                showToast('请先生成一个菜品');
+                return;
+            }
+            
+            // 检查是否已收藏
+            const alreadyFavorited = appState.favorites.some(
+                fav => fav.name === appState.currentDish.name
+            );
+            
+            if (!alreadyFavorited) {
+                appState.favorites.push(appState.currentDish);
+                showToast('收藏成功！');
+            } else {
+                showToast('已收藏过该菜品');
+            }
+        }
+        
+        // 保存方案
+        function savePlan() {
+            showToast('方案保存成功！');
+        }
+        
+        // 分享应用
+        function shareApp() {
+            const url = window.location.href;
+            const title = '好食家 - 智能饮食助手';
+            const text = '推荐你使用好食家，智能饮食推荐工具！';
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: text,
+                    url: url
+                }).then(() => {
+                    showToast('分享成功！');
+                }).catch(err => {
+                    console.log('分享取消:', err);
+                });
+            } else {
+                // 备用方案：复制链接
+                navigator.clipboard.writeText(url).then(() => {
+                    showToast('链接已复制，可以分享给朋友了！');
+                }).catch(err => {
+                    // 最后备用方案
+                    prompt('复制以下链接分享给朋友：', url);
+                });
+            }
+        }
+        
+        // 显示提示
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 隐藏加载动画
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 800);
+            
+            // 初始化选项选择
+            const radioOptions = document.querySelectorAll('.radio-option');
+            radioOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // 移除同组其他选项的选中状态
+                    const parent = this.parentElement;
+                    const siblings = parent.querySelectorAll('.radio-option');
+                    siblings.forEach(sib => sib.classList.remove('selected'));
+                    
+                    // 添加当前选项的选中状态
+                    this.classList.add('selected');
+                });
+            });
+            
+            // 初始化随机菜品
+            generateRandomDish();
+            
+            // 显示欢迎信息
+            setTimeout(() => {
+                showToast('欢迎使用好食家！');
+            }, 1000);
+            
+            // 防止双击缩放
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+            
+            // 添加到主屏幕提示
+            if (window.navigator.standalone === false) {
+                setTimeout(() => {
+                    showToast('💡 提示：可添加到主屏幕使用');
+                }, 3000);
+            }
+            
+            // 记录访问
+            console.log('好食家访问时间:', new Date().toLocaleString());
+        });
+        
+        // 离线支持
+        window.addEventListener('load', () => {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.log('ServiceWorker 注册失败:', err);
+                });
+            }
+        });
