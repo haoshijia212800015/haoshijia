@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>好食家生鲜PWA - 一键部署指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .steps {
+            padding: 40px;
+        }
+        
+        .step {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4CAF50;
+            transition: transform 0.3s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        
+        .step-title {
+            display: inline-block;
+            font-size: 22px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .step-content {
+            margin-left: 50px;
+        }
+        
+        .step-content p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #555;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 10px 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .warning {
+            background: #f8d7da;
+            padding: 10px 15px;
+            border-left: 4px solid #dc3545;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .success {
+            background: #d4edda;
+            padding: 10px 15px;
+            border-left: 4px solid #28a745;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .button.secondary {
+            background: linear-gradient(135deg, #2196F3, #64B5F6);
+        }
+        
+        .screenshot {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin: 20px 0;
+            border: 1px solid #ddd;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            display: block;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .steps {
+                padding: 20px;
+            }
+            
+            .step {
+                padding: 20px;
+            }
+            
+            .step-content {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 好食家生鲜PWA一键部署指南</h1>
+            <p>5分钟完成部署，手机端立即安装使用</p>
+        </div>
+        
+        <div class="steps">
+            <!-- 步骤1 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">1</span>
+                    准备部署文件
+                </div>
+                <div class="step-content">
+                    <p>确保您已获得项目文件：<strong>好食家生鲜PWA项目.zip</strong></p>
+                    <div class="highlight">
+                        <p>📁 <strong>文件位置：</strong>在OpenClaw工作空间中</p>
+                        <p>📦 <strong>文件大小：</strong>41.6KB（压缩包）</p>
+                        <p>📄 <strong>包含文件：</strong>28个文件，完整项目结构</p>
+                    </div>
+                    
+                    <p><strong>操作步骤：</strong></p>
+                    <p>1. 解压ZIP文件到任意文件夹（如桌面）</p>
+                    <p>2. 确保解压后的文件夹包含以下文件：</p>
+                    <div class="code-block">
+index.html
+manifest.json
+service-worker.js
+css/
+js/
+images/
+DEPLOYMENT.md
+README.md
+                    </div>
+                    
+                    <div class="success">
+                        <p>✅ <strong>验证：</strong>双击打开 index.html，应该能在浏览器中看到好食家首页</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤2 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">2</span>
+                    访问Vercel官网
+                </div>
+                <div class="step-content">
+                    <p>打开浏览器，访问Vercel官网：</p>
+                    <a href="https://vercel.com" target="_blank" class="button">
+                        🌐 点击访问 vercel.com
+                    </a>
+                    
+                    <p><strong>操作步骤：</strong></p>
+                    <p>1. 点击右上角 "Sign Up" 注册账号（如果已有账号请登录）</p>
+                    <p>2. 可以使用GitHub、GitLab、Bitbucket或邮箱注册</p>
+                    <p>3. 推荐使用GitHub账号，便于后续管理</p>
+                    
+                    <div class="highlight">
+                        <p>💡 <strong>提示：</strong>Vercel提供完全免费的套餐，足够测试使用</p>
+                        <p>🔒 <strong>安全：</strong>自动提供HTTPS证书，PWA必需</p>
+                        <p>⚡ <strong>速度：</strong>全球CDN加速，访问速度快</p>
+                    </div>
+                    
+                    <div class="warning">
+                        <p>⚠️ <strong>注意：</strong>PWA必须运行在HTTPS环境下，Vercel自动提供</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤3 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">3</span>
+                    创建新项目
+                </div>
+                <div class="step-content">
+                    <p>登录Vercel后，创建新项目：</p>
+                    
+                    <p><strong>操作步骤：</strong></p>
+                    <p>1. 点击仪表板中的 "New Project" 按钮</p>
+                    <p>2. 选择 "Import Git Repository" 或直接拖拽</p>
+                    <p>3. 我们选择 <strong>拖拽部署</strong> 方式</p>
+                    
+                    <div class="code-block">
+📂 拖拽部署步骤：
+1. 找到 "Drag and Drop your application folder here"
+2. 将解压后的「好食家生鲜PWA项目」文件夹拖拽到该区域
+3. 等待Vercel自动检测文件
+                    </div>
+                    
+                    <div class="highlight">
+                        <p>🎯 <strong>Vercel会自动检测：</strong></p>
+                        <p>• 检测到静态网站（HTML/CSS/JS）</p>
+                        <p>• 自动配置构建命令（无需构建）</p>
+                        <p>• 自动设置输出目录（根目录）</p>
+                    </div>
+                    
+                    <p><strong>项目配置：</strong></p>
+                    <p>1. <strong>项目名称：</strong> haoshijia-pwa（可自定义）</p>
+                    <p>2. <strong>框架预设：</strong> 选择 "Other" 或 "Static"</p>
+                    <p>3. <strong>根目录：</strong> 保持默认（/）</p>
+                    <p>4. <strong>构建命令：</strong> 留空（静态文件无需构建）</p>
+                    <p>5. <strong>输出目录：</strong> 留空（根目录）</p>
+                </div>
+            </div>
+            
+            <!-- 步骤4 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">4</span>
+                    开始部署
+                </div>
+                <div class="step-content">
+                    <p>点击 "Deploy" 按钮开始部署：</p>
+                    
+                    <div class="code-block">
+🚀 部署过程：
+1. Vercel上传所有文件到服务器
+2. 自动配置HTTPS证书
+3. 分配唯一的访问域名
+4. 全球CDN分发
+5. 部署完成，生成访问URL
+                    </div>
+                    
+                    <p><strong>预计时间：</strong> 1-3分钟</p>
+                    
+                    <div class="success">
+                        <p>✅ <strong>部署成功标志：</strong></p>
+                        <p>• 显示 "Congratulations! Your deployment is ready."</p>
+                        <p>• 显示唯一的访问URL，如：https://haoshijia-pwa.vercel.app</p>
+                        <p>• 显示部署状态为 "Ready"</p>
+                    </div>
+                    
+                    <p><strong>复制部署URL：</strong></p>
+                    <p>点击URL旁边的复制按钮，保存这个地址</p>
+                    
+                    <div class="highlight">
+                        <p>📝 <strong>记录您的部署URL：</strong></p>
+                        <div class="code-block" style="background: #4CAF50; color: white; font-size: 18px;">
+https://____________________.vercel.app
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 步骤5 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">5</span>
+                    手机端安装测试
+                </div>
+                <div class="step-content">
+                    <p>使用手机访问部署的URL，安装应用：</p>
+                    
+                    <div class="code-block">
+📱 iOS设备（Safari浏览器）：
+1. 使用Safari访问部署URL
+2. 点击底部分享按钮（方框带向上箭头）
+3. 滑动找到"添加到主屏幕"
+4. 确认名称"好食家"，点击"添加"
+5. 主屏幕出现「好食家」图标
+
+🤖 Android设备（Chrome浏览器）：
+1. 使用Chrome访问部署URL
+2. 点击右上角菜单（三个点）
+3. 选择"添加到主屏幕"或"安装应用"
+4. 确认名称"好食家"，点击"添加"
+5. 主屏幕出现「好食家」图标
+                    </div>
+                    
+                    <div class="success">
+                        <p>✅ <strong>安装成功标志：</strong></p>
+                        <p>• 主屏幕出现「好食家」应用图标</p>
+                        <p>• 点击图标以独立应用形式打开</p>
+                        <p>• 无浏览器地址栏，全屏体验</p>
+                    </div>
+                    
+                    <p><strong>功能测试清单：</strong></p>
+                    <p>1. ✅ 首页轮播图是否正常播放</p>
+                    <p>2. ✅ 分类导航是否能点击跳转</p>
+                    <p>3. ✅ 商品推荐是否显示正常</p>
+                    <p>4. ✅ 分类页面筛选功能是否正常</p>
+                    <p>5. ✅ 招商入驻表单是否能提交</p>
+                    <p>6. ✅ 离线访问是否正常（关闭网络测试）</p>
+                </div>
+            </div>
+            
+            <!-- 步骤6 -->
+            <div class="step">
+                <div class="step-title">
+                    <span class="step-number">6</span>
+                    部署验证和优化
+                </div>
+                <div class="step-content">
+                    <p>验证部署结果并进行优化：</p>
+                    
+                    <div class="code-block">
+🔍 验证步骤：
+1. 使用Chrome DevTools的Lighthouse工具
+2. 运行PWA审计，确保所有项目通过
+3. 测试不同网络环境下的表现
+4. 测试不同设备的兼容性
+                    </div>
+                    
+                    <p><strong>常见问题解决：</strong></p>
+                    
+                    <div class="warning">
+                        <p>❌ <strong>问题：</strong>Service Worker不工作</p>
+                        <p>💡 <strong>解决：</strong>清除浏览器缓存，重新访问</p>
+                    </div>
+                    
+                    <div class="warning">
+                        <p>❌ <strong>问题：</strong>无法添加到主屏幕</p>
+                        <p>💡 <strong>解决：</strong>确保与网站有足够交互（点击几个链接）</p>
+                    </div>
+                    
+                    <div class="warning">
+                        <p>❌ <strong>问题：</strong>图片不显示</p>
+                        <p>💡 <strong>解决：</strong>检查图片路径，替换为真实图片</p>
+                    </div>
+                    
+                    <p><strong>后续优化建议：</strong></p>
+                    <p>1. 📸 替换占位图片为真实商品图片</p>
+                    <p>2. 📝 更新商品信息和价格</p>
+                    <p>3. 📧 修改招商页面的联系方式</p>
+                    <p>4. 🔧 配置自定义域名（如 haoshijia.com）</p>
+                    <p>5. 📊 添加Google Analytics分析代码</p>
+                </div>
+            </div>
+            
+            <!-- 快速开始按钮 -->
+            <div style="text-align: center; margin: 40px 0;">
+                <a href="https://vercel.com" target="_blank" class="button" style="font-size: 20px; padding: 15px 40px;">
+                    🚀 立即开始部署
+                </a>
+                <p style="margin-top: 15px; color: #666;">预计完成时间：5-10分钟</p>
+            </div>
+            
+            <!-- 技术支持 -->
+            <div class="step" style="background: #e3f2fd; border-left-color: #2196F3;">
+                <div class="step-title">
+                    <span class="step-number">🆘</span>
+                    技术支持
+                </div>
+                <div class="step-content">
+                    <p>如果在部署过程中遇到任何问题：</p>
+                    
+                    <div class="code-block">
+📞 联系方式：
+• 邮箱：support@haoshijia.com
+• 电话：400-888-8888
+• 文档：https://docs.haoshijia.com
+
+🔧 常见问题：
+1. 部署失败：检查网络连接，重新尝试
+2. 无法访问：等待几分钟，DNS可能需要时间
+3. 功能异常：清除浏览器缓存，重新加载
+4. 安装失败：确保使用HTTPS，PWA必需
+
+🕒 服务时间：
+• 周一至周五：9:00-18:00
+• 紧急支持：7×24小时
+
+📚 更多资源：
+• 完整部署文档：DEPLOYMENT.md
+• 项目技术文档：项目总结.md
+• 代码结构说明：README.md
+                    </div>
+                    
+                    <p><strong>快速诊断：</strong></p>
+                    <p>1. 打开Chrome DevTools（F12）</p>
+                    <p>2. 查看Console标签页的错误信息</p>
+                    <p>3. 查看Application标签页的PWA状态</p>
+                    <p>4. 使用Lighthouse运行PWA审计</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 好食家生鲜平台 - PWA部署指南</p>
+            <p>版本：v1.0.0 | 最后更新：2026年4月17日</p>
+            <p style="margin-top: 20px;">
+                <a href="https://haoshijia.com" style="color: #4CAF50; text-decoration: none;">官网</a> | 
+                <a href="https://docs.haoshijia.com" style="color: #4CAF50; text-decoration: none;">文档</a> | 
+                <a href="https://github.com/haoshijia" style="color: #4CAF50; text-decoration: none;">GitHub</a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // 添加交互功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 为所有按钮添加点击效果
+            const buttons = document.querySelectorAll('.button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                        alert('部署指南已准备就绪！请按照步骤操作。');
+                    }
+                });
+            });
+            
+            // 步骤点击展开/收起
+            const steps = document.querySelectorAll('.step');
+            steps.forEach(step => {
+                const title = step.querySelector('.step-title');
+                title.style.cursor = 'pointer';
+                
+                title.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    if (content.style.display === 'none') {
+                        content.style.display = 'block';
+                        this.querySelector('.step-number').style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.display = 'none';
+                        this.querySelector('.step-number').style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            
+            // 复制URL功能
+            const urlInput = document.querySelector('.code-block[style*="background: #4CAF50"]');
+            if (urlInput) {
+                urlInput.style.cursor = 'pointer';
+                urlInput.title = '点击复制URL模板';
+                urlInput.addEventListener('click', function() {
+                    const text = 'https://haoshijia-pwa.vercel.app';
+                    navigator.clipboard.writeText(text).then(() => {
+                        const originalHTML = this.innerHTML;
+                        this.innerHTML = '✅ URL已复制到剪贴板！';
+                        this.style.background = '#28a745';
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.style.background = '#4CAF50';
+                        }, 2000);
+                    });
+                });
+            }
+            
+            // 添加打印功能
+            const printBtn = document.createElement('button');
+            printBtn.className = 'button secondary';
+            printBtn.innerHTML = '🖨️ 打印本指南';
+            printBtn.style.margin = '20px auto';
+            printBtn.style.display = 'block';
+            printBtn.addEventListener('click', () => window.print());
+            
+            const footer = document.querySelector('.footer');
+            footer.parentNode.insertBefore(printBtn, footer);
+            
+            // 添加进度指示器
+            const progress = document.createElement('div');
+            progress.style.position = 'fixed';
+            progress.style.top = '0';
+            progress.style.left = '0';
+            progress.style.width = '0%';
+            progress.style.height = '4px';
+            progress.style.background = 'linear-gradient(90deg, #4CAF50, #8BC34A)';
+            progress.style.transition = 'width 0.3s ease';
+            progress.style.zIndex = '1000';
+            document.body.appendChild(progress);
+            
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progress.style.width = scrolled + '%';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+{
+  "name": "haoshijia-pwa",
+  "version": "1.0.0",
+  "description": "好食家生鲜平台 - 渐进式Web应用",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "build": "echo '无需构建，直接部署静态文件'",
+    "test": "echo '运行测试...'",
+    "lint": "echo '代码检查...'",
+    "deploy:vercel": "vercel --prod",
+    "deploy:netlify": "netlify deploy --prod",
+    "optimize-images": "echo '优化图片...'",
+    "generate-icons": "echo '生成图标...'",
+    "audit:pwa": "lighthouse http://localhost:3000 --view --output=html --output-path=./lighthouse-report.html"
+  },
+  "keywords": [
+    "pwa",
+    "生鲜",
+    "电商",
+    "移动端",
+    "好食家"
+  ],
+  "author": "好食家团队",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "last 2 versions",
+    "> 1%",
+    "not dead"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/haoshijia/haoshijia-pwa.git"
+  },
+  "bugs": {
+    "url": "https://github.com/haoshijia/haoshijia-pwa/issues"
+  },
+  "homepage": "https://haoshijia.com"
+}

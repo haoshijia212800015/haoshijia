@@ -1,0 +1,16 @@
+# 好食家生鲜平台 - robots.txt
+# 允许所有搜索引擎爬虫访问
+
+User-agent: *
+Allow: /
+
+# 禁止爬虫访问的路径
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+
+# 网站地图
+Sitemap: https://haoshijia.com/sitemap.xml
+
+# 爬取延迟（秒）
+Crawl-delay: 2
